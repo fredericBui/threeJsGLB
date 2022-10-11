@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        canvas{
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="three.js"></script>
+    <script type="module" src="loader.js"></script>
+    <script type="module">
+        import { GLTFLoader } from './loader.js';
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000);
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        var loader = new GLTFLoader();
+        var obj;
+        loader.load("me.glb",function(glb){
+            obj = glb.scene;
+            scene.add(glb.scene);
+            console.log(obj);
+        });
+        // scene.background = new THREE.Color(0xffffff);
+        var light = new THREE.HemisphereLight(0xffffff, 0x000000, 4);
+        scene.add(light);
+
+        camera.position.set(0, 1.5, 1);
+        function animate(){
+            requestAnimationFrame(animate);
+            obj.rotation.y += 0.003;
+            renderer.render(scene,camera);
+        }
+        animate();
+
+    </script>
+</body>
+
+</html>
